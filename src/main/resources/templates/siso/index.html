@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        .h {
+            position: relative;
+        }
+
+        #logo {
+            display: inline-block;
+            width: 100px;
+        }
+
+        h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            padding: 44px;
+            color: #555555;
+            font-size: 45pt;
+            text-shadow: 4px 4px white;
+        }
+
+        body {
+            background-image: url(img/airplane.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            text-align: center;
+        }
+
+        fieldset {
+            width: 400px;
+            height: 175px;
+            margin: 20px auto;
+            line-height: 25px;
+            position: relative;
+            border-style: inset;
+            border-radius: 15px;
+            font-weight: bolder;
+        }
+
+        nav {
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 50px;
+            font-size: 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        #login_button {
+            width: 80px;
+            height: 30px;
+            background-color: black;
+            color: white;
+            font-size: 11pt;
+            border-radius: 15px;
+        }
+    </style>
+
+    <title>✈ SISO TRAVEL ✈ : Login</title>
+</head>
+
+<body>
+
+    <div class="h">
+        <h1><img id="logo" src="img/logo.png">SISO TRAVEL</h1>
+
+        <fieldset>
+            <br>
+            <label for="user_id">ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="text" name="id"><br>
+            <br>
+            <label for="user_pw">Password &nbsp;</label>
+            <input type="password" name="pw"><br>
+            <br>
+            <a href="main.html"><input id="login_button" type="button" value="Login"></a>
+        </fieldset>
+        <br>
+
+        <nav>
+            <ul>
+                <li><a href="join.html" title="회원가입" target="_blank">Join</a></li>
+                <li><a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EC%95%84%EC%9D%B4%EB%94%94+%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8+%EC%B0%BE%EA%B8%B0" title="아이디/비밀번호 찾기" target="_blank">Find ID / Password</a></li>
+            </ul>
+        </nav>
+    </div>
+</body></html>

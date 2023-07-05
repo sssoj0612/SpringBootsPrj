@@ -1,4 +1,4 @@
-package kopo.poly.util;
+package kopo.poly.Util;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 

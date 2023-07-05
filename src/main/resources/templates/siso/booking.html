@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <style type="text/css">
+        body {
+            width: 700px;
+            margin: 0 auto;
+        }
+
+        fieldset {
+            margin: 40px 10px 10px auto;
+            line-height: 50px;
+            background-color: white;
+        }
+    </style>
+
+    <title>Booking</title>
+</head>
+
+<body>
+
+    <form name="booking" method="post" action="">
+        <fieldset>
+            <legend> 예약자(대표) 정보 </legend>
+            <label for="same">&nbsp;회원정보와 동일시 체크 : </label> <input type="radio" name="check" id="same" value="same" checked><br>
+            <label for="name">- 이름 : </label>
+            <input type="text" placeholder="홍길동" name="name_"><br>
+            <label for="phone">- 전화번호 : </label>
+            <input type="tel" placeholder="000-0000-0000" name="phone_"><br>
+            <label for="mail">- 이메일 : </label>
+            <input type="email" placeholder="email@naver.com" name="mail_">
+        </fieldset>
+
+        <fieldset>
+            <legend> 여행 예약 정보 </legend>
+            <label for="date">- 예약일 : </label>
+            <input type="date" name="date_"> ~ <input type="date" name="date_2"><br>
+            <label for="stay">- 숙소 타입 : </label>
+            <input type="checkbox" name="stay" value="airbnb">에어비앤비&nbsp;&nbsp;
+            <input type="checkbox" name="stay" value="hotel">호텔&nbsp;&nbsp;
+            <input type="checkbox" name="stay" value="resort">리조트
+            <input type="checkbox" name="stay" value="resort">숙박안함 <br>
+            <label for="room">- 방 개수 : <input type="number" min="1" id="room">&nbsp;&nbsp;<label for="upgrade">( 업그레이드 여부 <input type="radio" name="up" id="upgrade" value="upgrade"> )</label></label><br>
+            <label for="total">- 예약 인원 : </label> <input type="number" min="1" id="number"><br>
+            <label for="place">- 여행지 :</label>
+            <input type="text" list="local" placeholder="국내 여행지 선택">
+            <datalist id="local">
+                <option value="경상북도" label="인당 \ 200,000부터" />
+                <option value="강원도" label="인당 \ 250,000부터" />
+                <option value="제주도" label="인당 \ 350,000부터" />
+            </datalist>
+            <input type="text" list="foreign" placeholder="해외 여행지 선택">
+            <datalist id="foreign">
+                <option value="베트남" label="인당 \ 500,000부터" />
+                <option value="태국" label="인당 \ 600,000부터" />
+                <option value="필리핀" label="인당 \ 550,000부터" />
+            </datalist> <br>
+            <label for="want">- 요청 사항 : </label><br>
+            <textarea name="want" cols="60" rows="5">전달하실 내용을 적어주세요.</textarea>
+        </fieldset><br>
+        <hr>
+        <br>
+        <input type="submit" value="전송"> &nbsp;
+        <input type="reset" value="초기화"> &nbsp;
+        <br>
+        <br>
+        <br>
+    </form>
+
+</body></html>
