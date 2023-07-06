@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style type="text/css">
         .h {
             position: relative;
@@ -25,7 +25,7 @@
         }
 
         body {
-            background-image: url(img/airplane.jpg);
+            background-image: url(/images/airplane.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             text-align: center;
@@ -65,41 +65,88 @@
             font-weight: bold;
         }
 
-        #login_button {
+        button {
             width: 80px;
             height: 30px;
             background-color: black;
             color: white;
-            font-size: 11pt;
+            font-size: 10pt;
             border-radius: 15px;
         }
     </style>
+
+
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+
+            // 회원가입
+            $("#btnUserReg").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                location.href = "/siso/join"; // "/user/userRegForm"; 기존꺼 주석처리
+            })
+
+            // 아이디 찾기
+            $("#btnSearchUserId").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                location.href = "/user/searchUserId";
+            })
+
+            // 비밀번호 찾기
+            $("#btnSearchPassword").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                location.href = "/user/searchPassword";
+            })
+
+
+        })
+
+        function checkInputData() {
+            let f = document.getElementById("f"); // form 태그
+
+            if (f.user_id.value === "") {
+                alert("아이디를 입력하세요.");
+                f.user_id.focus();
+                return false;
+            }
+
+            if (f.password.value === "") {
+                alert("비밀번호를 입력하세요.");
+                f.password.focus();
+                return false;
+            }
+
+        }
+    </script>
+
 
     <title>✈ SISO TRAVEL ✈ : Login</title>
 </head>
 
 <body>
+<div class="h">
+    <h1><img id="logo" src="/images/logo.png">SISO TRAVEL</h1>
 
-    <div class="h">
-        <h1><img id="logo" src="img/logo.png">SISO TRAVEL</h1>
-
+    <form action="/user/loginProc" method="post" onsubmit="checkInputData()" id="f">
         <fieldset>
             <br>
-            <label for="user_id">ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="text" name="id"><br>
+            ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="text" name="user_id" id="user_id"><br>
             <br>
-            <label for="user_pw">Password &nbsp;</label>
-            <input type="password" name="pw"><br>
+            Password &nbsp;
+            <input type="password" name="password" id="password"><br>
             <br>
-            <a href="main.html"><input id="login_button" type="button" value="Login"></a>
+            <button id="btnLogin" type="submit">Login</button>
         </fieldset>
-        <br>
+    </form>
+    <br>
 
-        <nav>
-            <ul>
-                <li><a href="join.html" title="회원가입" target="_blank">Join</a></li>
-                <li><a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=%EC%95%84%EC%9D%B4%EB%94%94+%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8+%EC%B0%BE%EA%B8%B0" title="아이디/비밀번호 찾기" target="_blank">Find ID / Password</a></li>
-            </ul>
-        </nav>
-    </div>
-</body></html>
+    <nav>
+        <ul>
+            <button id="btnUserReg" type="button">Join</button>
+            <button id="btnSearchUserId" type="button">Find ID</button>
+            <button id="btnSearchPassword" type="button">Find P/W</button>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

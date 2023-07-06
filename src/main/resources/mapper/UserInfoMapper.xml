@@ -11,6 +11,7 @@
          USER_NAME,
          PASSWORD,
          EMAIL,
+         TEL,
          ADDR1,
          ADDR2,
          REG_ID,
@@ -22,6 +23,7 @@
                 #{user_name},
                 #{password},
                 #{email},
+                #{tel},
                 #{addr1},
                 #{addr2},
                 #{user_id},
@@ -36,5 +38,21 @@
         FROM USER_INFO
         WHERE USER_ID = #{user_id}
         AND   PASSWORD = #{password}
+    </select>
+
+    <!-- 회원가입 전 아이디 중복체크하기 (DB조회하기) -->
+    <select id="getUserIdExists" parameterType="UserInfoDTO" resultType="UserInfoDTO">
+        SELECT CASE WHEN COUNT(1) = 0 THEN 'N'
+                    ELSE 'Y' END AS EXISTS_YN
+        FROM USER_INFO
+        WHERE USER_ID = #{user_id};
+    </select>
+
+    <!-- 회원가입 전 이메일 중복체크하기 (DB조회하기) -->
+    <select id="getEmailExists" parameterType="UserInfoDTO" resultType="UserInfoDTO">
+        SELECT CASE WHEN COUNT(1) = 0 THEN 'N'
+                    ELSE 'Y' END AS EXISTS_YN
+        FROM USER_INFO
+        WHERE EMAIL = #{email};
     </select>
 </mapper>

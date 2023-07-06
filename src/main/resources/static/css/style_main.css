@@ -1,0 +1,74 @@
+a {
+    text-decoration: none;
+}
+
+.h {
+    position: relative;
+}
+
+h1 a {
+    color: inherit;
+}
+
+#logo {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100px;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 45px;
+    color: #555555;
+    font-size: 45pt;
+    text-shadow: 4px 4px white;
+    background-image: url(//images/h1_main.jpg);
+}
+
+span {
+    position: absolute;
+    right: 100px;
+    top: 150px;
+    font-size: 14pt;
+    font-weight: bold;
+    color: dimgrey;
+}
+
+nav {
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: aliceblue;
+    border: 1px solid;
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 70px;
+    font-size: 16px;
+}
+
+nav ul li:hover a {
+    text-decoration: underline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+iframe {
+    margin: 30px auto;
+    display: block;
+    width: 960px;
+    height: 616px;
+    background-color: #E7E7E7;
+}

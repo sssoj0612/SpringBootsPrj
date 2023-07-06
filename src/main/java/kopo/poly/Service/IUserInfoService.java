@@ -3,11 +3,13 @@ package kopo.poly.Service;
 import kopo.poly.DTO.UserInfoDTO;
 
 public interface IUserInfoService { // 인터페이스로 먼저 선언하고 만든 클래스로 구현
-    /*// 아이디 중복체크
+
+    // 아이디 중복체크
     UserInfoDTO getUserIdExists(UserInfoDTO pDTO) throws Exception;
 
+
     // 이메일 주소 중복 체크 및 인증 값
-    UserInfoDTO getEmailExists(UserInfoDTO pDTO) throws Exception;*/
+    UserInfoDTO getEmailExists(UserInfoDTO pDTO) throws Exception;
 
 
     // 회원 가입하기(회원정보 등록하기)

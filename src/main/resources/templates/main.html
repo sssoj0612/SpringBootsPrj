@@ -1,11 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>2320110186 김소정</title>
+    <title>✈ SISO TRAVEL ✈</title>
+    <link rel="stylesheet" type="text/css" href="/css/style_main.css" />
 </head>
+
+
+<script>
+    function LoadBooking() {
+        var iframe = document.getElementById('area');
+        iframe.src = '/siso/booking';
+    }
+
+    function LoadLocal() {
+        var iframe = document.getElementById('area');
+        iframe.src = '/siso/local';
+    }
+
+    function LoadForeign() {
+        var iframe = document.getElementById('area');
+        iframe.src = '/siso/foreign';
+    }
+
+    function LoadPhoto() {
+        var iframe = document.getElementById('area');
+        iframe.src = '/siso/photo';
+    }
+
+    function LoadNoticeList() {
+        var iframe = document.getElementById('area');
+        iframe.src = '/notice/noticeList';
+    }
+</script>
+
+
 <body>
-<h1>Hello Spring, This is Main Page.</h1>
-<a href="/and">and 페이지로 이동</a>
+
+<div class="h">
+    <h1 style="background-image: url('/images/h1_main.jpg');">
+        <a href="/main"><img src="/images/logo.png" id="logo"></a>
+        <a href="/main">SISO TRAVEL</a></h1>
+</div>
+
+<a href="/siso/index"><span>Logout</span></a>
+
+<nav>
+    <ul>
+        <li><a href="/siso/booking" onclick="LoadBooking()" title="예약하기" target="frame">Booking</a></li>
+        <li><a href="/siso/local" onclick="LoadLocal()" title="국내여행" target="frame">Local</a></li>
+        <li><a href="/siso/foreign" onclick="LoadForeign()" title="해외여행" target="frame">Foreign</a></li>
+        <li><a href="/siso/photo" onclick="LoadPhoto()" title="사진앨범" target="frame">Review</a></li>
+        <li><a href="/notice/noticeList" onclick="LoadNoticeList()" title="게시판" target="frame">Notice</a></li>
+    </ul>
+</nav>
+
+<iframe id="area" name="frame" src="/images/iframe_main.jpg"></iframe>
+
 </body>
 </html>
