@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>✈ SISO TRAVEL ✈ : Join</title>
+    <style type="text/css">
+        body {
+            background-image: url(img/airplane.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        form {
+            padding-left: 55px;
+            padding-right: 55px;
+
+        }
+
+        .main {
+            width: 350px;
+            border: 1px solid grey;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <a href="index.html"><h1><em>Join SISO TRAVEL</em></h1></a>
+        <br>
+        <form name="join" method="post" action="index.html">
+            <strong>아이디</strong><br>
+            <input type="text" size="18" name="u_id" maxlength="10"> <input type="button" value="중복확인" onclick="alert('사용 가능한 아이디입니다.')">
+            <br><br>
+            <strong>비밀번호</strong><br>
+            <input type="password" size="29" name="u_pass" maxlength="10">
+            <br><br>
+            <strong>이름</strong><br>
+            <input type="text" size="29" name="u_name" maxlength="10">
+            <br><br>
+            <strong>이메일</strong><br>
+            <input type="email" size="29" name="u_email" placeholder="abcd@naver.com">
+            <br><br>
+            <strong>성별</strong><br>
+            <input type="radio" name="gender" value="f" checked />여성 &nbsp; &nbsp;
+            <input type="radio" name="gender" value="m">남성
+            <br><br>
+            <hr>
+            <br>
+            <strong>생년월일</strong><br>
+            <input type="date" name="u_date" style="width:230px;">
+            <br><br>
+            <strong>가입경로</strong><br>
+            <select name="acc" style="width:235px;">
+                <option value="aa">선택해주세요</option>
+                <option value="bb">인터넷 검색을 통해서</option>
+                <option value="cc">지인소개를 통해서</option>
+                <option value="dd">SNS를 통해서</option>
+                <option value="ee">기타</option>
+            </select>
+            <br><br>
+            <strong>프로필사진</strong><br>
+            <input type="file">
+            <br><br>
+            <strong>자기소개</strong><br>
+            <textarea name="memo" rows="7" cols="35">간단하게 자신을 소개하세요.</textarea>
+            <br><br>
+            <strong>여행스타일</strong><br>
+            <input type="checkbox" name="is" value="a" checked />힐링 여행 &nbsp;
+            <input type="checkbox" name="is" value="b">콘셉트 여행&nbsp;
+            <input type="checkbox" name="is" value="d">로드 트립 &nbsp;
+            <input type="checkbox" name="is" value="c">무계획 여행&nbsp;
+            <input type="checkbox" name="is" value="e">무전 여행 &nbsp;
+            <input type="checkbox" name="is" value="f">기타
+            <br><br>
+            <hr><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" value="Sign Up">
+            <input type="reset" value="Cancel">
+        </form>
+    </div>
+</body></html>

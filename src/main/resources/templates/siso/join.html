@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>✈ SISO TRAVEL ✈ : Join</title>
     <style type="text/css">
         body {
-            background-image: url(img/airplane.jpg);
+            background-image: url(/images/airplane.jpg);
             background-repeat: no-repeat;
             background-size: cover;
         }
@@ -35,61 +35,244 @@
             text-align: center;
         }
     </style>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        // 아이디 중복체크여부 (중복 Y / 중복아님 : N)
+        let userIdCheck = "Y";
+
+        // 이메일 중복체크 인증번호 발송 값
+        let emailAuthNumber = "";
+
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+
+            let f = document.getElementById("f"); // form 태그
+
+            // 아이디 중복체크
+            $("#btnUserId").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                userIdExists(f)
+
+            })
+
+            // 이메일 중복체크
+            $("#btnEmail").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                emailExists(f)
+
+            })
+
+            // 우편번호 찾기
+            $("#btnAddr").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                kakaoPost(f);
+            })
+
+            // 회원가입
+            $("#btnSend").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                doSubmit(f);
+            })
+
+            // 초기화면으로
+            $("#btnCancel").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                location.href = "/siso/index";
+            })
+
+        })
+
+        // 회원아이디 중복 체크
+        function userIdExists(f) {
+
+            if (f.user_id.value === "") {
+                alert("아이디를 입력하세요.");
+                f.user_id.focus();
+                return;
+            }
+
+            // Ajax 호출해서 회원가입하기
+            $.ajax({
+                    url: "/user/getUserIdExists",
+                    type: "post", // 전송방식은 Post
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                    success: function (json) { // 호출이 성공했다면..
+
+                        if (json.exists_yn === "Y") {
+                            alert("이미 가입된 아이디가 존재합니다.");
+                            f.user_id.focus();
+
+                        } else {
+                            alert("가입 가능한 아이디입니다.");
+                            userIdCheck = "N";
+                        }
+
+                    }
+                }
+            )
+        }
+
+        // 이메일 중복 체크
+        function emailExists(f) {
+            if (f.email.value === "") {
+                alert("이메일을 입력하세요.");
+                f.email.focus();
+                return;
+            }
+
+            $.ajax({
+                    url: "/user/getEmailExists",
+                    type: "post", // 전송방식은 Post
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                    success: function (json) { // 호출이 성공했다면..
+
+                        if (json.exists_yn === "Y") {
+                            alert("이미 가입된 이메일 주소가 존재합니다.");
+                            f.email.focus();
+
+                        } else {
+                            alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하기 바랍니다.");
+                            emailAuthNumber = json.authNumber;
+
+                        }
+
+                    }
+                }
+            )
+        }
+
+        // 카카오 우편번호 조회 API 호출
+        function kakaoPost(f) {
+            new daum.Postcode({
+                oncomplete: function (data) {
+
+                    // Kakao에서 제공하는 data는 JSON구조로 주소 조회 결과값을 전달함
+                    // 주요 결과값
+                    // 주소 : data.address
+                    // 우편번호 : data.zonecode
+                    let address = data.address; // 주소
+                    let zonecode = data.zonecode; // 우편번호
+                    f.addr1.value = "(" + zonecode + ")" + address
+                }
+            }).open();
+        }
+
+        //회원가입 정보의 유효성 체크하기
+        function doSubmit(f) {
+
+            if (f.user_id.value === "") {
+                alert("아이디를 입력하세요.");
+                f.user_id.focus();
+                return;
+            }
+
+            if (userIdCheck !== "N") {
+                alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입 바랍니다.");
+                f.user_id.focus();
+                return;
+            }
+
+            if (f.user_name.value === "") {
+                alert("이름을 입력하세요.");
+                f.user_name.focus();
+                return;
+            }
+
+            if (f.password.value === "") {
+                alert("비밀번호를 입력하세요.");
+                f.password.focus();
+                return;
+            }
+
+            if (f.password2.value === "") {
+                alert("비밀번호확인을 입력하세요.");
+                f.password2.focus();
+                return;
+            }
+
+            if (f.password.value !== f.password2.value) {
+                alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                f.password.focus();
+                return;
+            }
+
+            if (f.email.value === "") {
+                alert("이메일을 입력하세요.");
+                f.email.focus();
+                return;
+            }
+
+            if (f.authNumber.value === "") {
+                alert("이메일 인증번호를 입력하세요.");
+                f.authNumber.focus();
+                return;
+            }
+
+            if (f.authNumber.value != emailAuthNumber) {
+                alert("이메일 인증번호가 일치하지 않습니다.");
+                f.authNumber.focus();
+                return;
+            }
+
+            if (f.addr1.value === "") {
+                alert("주소를 입력하세요.");
+                f.addr1.focus();
+                return;
+            }
+
+            if (f.addr2.value === "") {
+                alert("상세주소를 입력하세요.");
+                f.addr2.focus();
+                return;
+            }
+
+        }
+
+    </script>
 </head>
 
 <body>
     <div class="main">
-        <a href="index.html"><h1><em>Join SISO TRAVEL</em></h1></a>
-        <br>
-        <form name="join" method="post" action="index.html">
+        <a href="/siso/index"><h1><em>Join SISO TRAVEL</em></h1></a>
+        <hr>
+
+        <form name="join" method="post" action="/user/insertUserInfo" onsubmit="doSubmit(this)" id="f">
             <strong>아이디</strong><br>
-            <input type="text" size="18" name="u_id" maxlength="10"> <input type="button" value="중복확인" onclick="alert('사용 가능한 아이디입니다.')">
-            <br><br>
-            <strong>비밀번호</strong><br>
-            <input type="password" size="29" name="u_pass" maxlength="10">
+            <input type="text" size="18" name="user_id" maxlength="30">
+            <input type="button" id="btnUserId" value="중복확인">
+
             <br><br>
             <strong>이름</strong><br>
-            <input type="text" size="29" name="u_name" maxlength="10">
+            <input type="text" size="29" name="user_name" maxlength="30">
+
+            <br><br>
+            <strong>비밀번호</strong><br>
+            <input type="password" size="29" name="password" maxlength="64">
+
+            <br><br>
+            <strong>비밀번호 확인</strong><br>
+            <input type="password" size="29" name="password2" maxlength="64">
+
             <br><br>
             <strong>이메일</strong><br>
-            <input type="email" size="29" name="u_email" placeholder="abcd@naver.com">
+            <input type="email" size="29" name="email" maxlength="128" placeholder="abcd@naver.com">
+            <button id="btnEmail" type="button">중복확인</button>
+            <input type="text" size="18" name="authNumber" placeholder="메일로 발송된 인증번호">
+
             <br><br>
-            <strong>성별</strong><br>
-            <input type="radio" name="gender" value="f" checked />여성 &nbsp; &nbsp;
-            <input type="radio" name="gender" value="m">남성
+            <strong>전화번호</strong><br>
+            <input type="tel" size="29" name="tel" maxlength="13" placeholder="010-0000-0000">
+
             <br><br>
-            <hr>
-            <br>
-            <strong>생년월일</strong><br>
-            <input type="date" name="u_date" style="width:230px;">
-            <br><br>
-            <strong>가입경로</strong><br>
-            <select name="acc" style="width:235px;">
-                <option value="aa">선택해주세요</option>
-                <option value="bb">인터넷 검색을 통해서</option>
-                <option value="cc">지인소개를 통해서</option>
-                <option value="dd">SNS를 통해서</option>
-                <option value="ee">기타</option>
-            </select>
-            <br><br>
-            <strong>프로필사진</strong><br>
-            <input type="file">
-            <br><br>
-            <strong>자기소개</strong><br>
-            <textarea name="memo" rows="7" cols="35">간단하게 자신을 소개하세요.</textarea>
-            <br><br>
-            <strong>여행스타일</strong><br>
-            <input type="checkbox" name="is" value="a" checked />힐링 여행 &nbsp;
-            <input type="checkbox" name="is" value="b">콘셉트 여행&nbsp;
-            <input type="checkbox" name="is" value="d">로드 트립 &nbsp;
-            <input type="checkbox" name="is" value="c">무계획 여행&nbsp;
-            <input type="checkbox" name="is" value="e">무전 여행 &nbsp;
-            <input type="checkbox" name="is" value="f">기타
+            <strong>주소</strong><br>
+            <input type="text" name="addr1" size="18" maxlength="60">
+            <input type="button" id="btnAddr" value="주소검색">
+            <input type="text" name="addr2" size="29" maxlength="60" placeholder="상세주소를 적어주세요.">
+
             <br><br>
             <hr><br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="submit" value="Sign Up">
-            <input type="reset" value="Cancel">
+            <input type="submit" id="btnSend" value="Sign Up">
+            <input type="button" id="btnCancel" value="Cancel">
         </form>
     </div>
 </body></html>
