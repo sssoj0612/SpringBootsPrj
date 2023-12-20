@@ -5,15 +5,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class NoticeDTO {  // mybatis dto와 컬럼명을 맞추기
-    private String notice_seq;
+public class NoticeDTO {  // JPA로 변경
+    private long noticeSeq;
     private String title;
-    private String notice_yn;
+    private String noticeYn;
     private String contents;
-    private String user_id;
-    private String read_cnt;
-    private String reg_id;
-    private String reg_dt;
-    private String chg_id;
-    private String chg_dt;
+    private String userId;
+    private String readCnt;
+    private String regId;
+    private String regDt;
+    private String chgId;
+    private String chgDt;
 }

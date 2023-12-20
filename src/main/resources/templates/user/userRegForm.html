@@ -46,9 +46,9 @@
         // 회원아이디 중복 체크
         function userIdExists(f) {
 
-            if (f.user_id.value === "") {
+            if (f.userId.value === "") {
                 alert("아이디를 입력하세요.");
-                f.user_id.focus();
+                f.userId.focus();
                 return;
             }
 
@@ -62,7 +62,7 @@
 
                         if (json.exists_yn === "Y") {
                             alert("이미 가입된 아이디가 존재합니다.");
-                            f.user_id.focus();
+                            f.userId.focus();
 
                         } else {
                             alert("가입 가능한 아이디입니다.");
@@ -123,21 +123,21 @@
         //회원가입 정보의 유효성 체크하기
         function doSubmit(f) {
 
-            if (f.user_id.value === "") {
+            if (f.userId.value === "") {
                 alert("아이디를 입력하세요.");
-                f.user_id.focus();
+                f.userId.focus();
                 return;
             }
 
              if (userIdCheck !== "N") {
                  alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입 바랍니다.");
-                 f.user_id.focus();
+                 f.userId.focus();
                  return;
              }
 
-            if (f.user_name.value === "") {
+            if (f.userName.value === "") {
                 alert("이름을 입력하세요.");
-                f.user_name.focus();
+                f.userName.focus();
                 return;
             }
 
@@ -190,7 +190,7 @@
             }
 
             // Ajax 호출해서 회원가입하기
-            /*$.ajax({
+            $.ajax({
                     url: "/user/insertUserInfo",
                     type: "post", // 전송방식은 Post
                     dataType: "JSON", // 전송 결과는 JSON으로 받기
@@ -199,7 +199,7 @@
 
                         if (json.result === 1) { // 회원가입 성공
                             alert(json.msg); // 메시지 띄우기
-                            location.href = "/siso/index"; // 로그인 페이지 이동
+                            location.href = "/user/login"; // 로그인 페이지 이동
 
                         } else { // 회원가입 실패
                             alert(json.msg); // 메시지 띄우기
@@ -207,7 +207,7 @@
 
                     }
                 }
-            )*/
+            )
         }
 
     </script>
@@ -216,14 +216,14 @@
 <h2>회원 가입하기</h2>
 <hr/>
 <br/>
-<form action="/user/insertUserInfo" method="post" onsubmit="doSubmit(this)" id="f">
+<form id="f">
     <div class="divTable minimalistBlack">
         <div class="divTableBody">
             <div class="divTableRow">
                 <div class="divTableCell">* 아이디
                 </div>
                 <div class="divTableCell">
-                    <input type="text" name="user_id" style="width:80%" placeholder="아이디"/>
+                    <input type="text" name="userId" style="width:80%" placeholder="아이디"/>
                     <button id="btnUserId" type="button">아이디 중복체크</button>
                 </div>
             </div>
@@ -231,7 +231,7 @@
                 <div class="divTableCell">* 이름
                 </div>
                 <div class="divTableCell">
-                    <input type="text" name="user_name" style="width:95%" placeholder="이름"/>
+                    <input type="text" name="userName" style="width:95%" placeholder="이름"/>
                 </div>
             </div>
             <div class="divTableRow">
@@ -275,7 +275,7 @@
         </div>
     </div>
     <div>
-        <button id="btnSend" type="submit">회원가입</button>
+        <button id="btnSend" type="button">회원가입</button>
     </div>
 </form>
 

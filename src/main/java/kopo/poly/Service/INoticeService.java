@@ -28,4 +28,5 @@ public interface INoticeService {
     // 공지사항 삭제
     // @param pDTO = 삭제할 notice_seq 값
     void deleteNoticeInfo(NoticeDTO pDTO) throws Exception;
+
 }
