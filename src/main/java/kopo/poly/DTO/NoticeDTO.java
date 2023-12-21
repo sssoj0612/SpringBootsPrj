@@ -16,4 +16,5 @@ public class NoticeDTO {  // JPA로 변경
     private String regDt;
     private String chgId;
     private String chgDt;
+    private String userName;
 }

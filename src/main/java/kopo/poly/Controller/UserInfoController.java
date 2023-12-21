@@ -1,5 +1,6 @@
 package kopo.poly.Controller;
 
+import kopo.poly.DTO.MsgDTO;
 import kopo.poly.DTO.UserInfoDTO;
 import kopo.poly.Service.IUserInfoService;
 import kopo.poly.Util.CmmUtil;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,28 +19,54 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Slf4j
+@RequestMapping(value = "/user")
 @RequiredArgsConstructor
 @Controller
 public class UserInfoController {
     private final IUserInfoService userInfoService; // 서비스를 안에서 사용할 수 있게 하는 선언문
 
     // 회원가입 화면으로 이동
-    @GetMapping(value ="/siso/join")  // "/user/userRegForm" 기존꺼 주석처리
+    @GetMapping(value ="/userRegForm")  // "/user/userRegForm" 기존꺼 주석처리
     public String userRegForm() {
-        log.info(this.getClass().getName() + ".siso/join"); // ".user/userRegForm" 기존꺼 주석처리
+        log.info(this.getClass().getName() + ".user/userRegForm Start!"); // ".user/userRegForm" 기존꺼 주석처리
 
-        return "/siso/join"; // "/user/userRegForm"; 기존꺼 주석처리
+        return "user/userRegForm"; // "/user/userRegForm"; 기존꺼 주석처리
+    }
+
+    // 회원가입 전 아이디 중복체크하기 (Ajax를 통해 입력한 아이디 정보 받음)
+    @ResponseBody
+    @PostMapping(value = "getUserIdExists")
+    public UserInfoDTO getUserExists(HttpServletRequest request) throws Exception {
+
+        log.info(this.getClass().getName() + ".getUserIdExists Start!");
+
+        String userId = CmmUtil.nvl(request.getParameter("userId")); // 회원아이디
+
+        log.info("userId : " + userId);
+
+        UserInfoDTO pDTO = new UserInfoDTO();
+        pDTO.setUserId(userId);
+
+        // 회원아이디를 통해 중복된 아이디인지 조회
+        UserInfoDTO rDTO = Optional.ofNullable(userInfoService.getUserIdExists(pDTO))
+                .orElseGet(UserInfoDTO::new);
+
+        log.info(this.getClass().getName() + ".getUserIdExists End!");
+
+        return rDTO;
     }
 
 
-    //회원가입 로직 처리
-    @PostMapping(value = "/user/insertUserInfo")
-    public String insertUserInfo(HttpServletRequest request, ModelMap modelMap) throws Exception {
+    // 회원가입 로직 처리
+    @ResponseBody
+    @PostMapping(value = "insertUserInfo")
+    public MsgDTO insertUserInfo(HttpServletRequest request, ModelMap modelMap) throws Exception {
 
         log.info(this.getClass().getName() + ".insertUserInfo start!");
-        int res;
+
+        int res = 0;
         String msg = ""; // 회원가입 결과에 대한 메시지를 전달할 변수
-        String url = ""; // 회원가입 결과에 대한 url을 전달할 변수
+        MsgDTO dto = null; // 결과 메시지 구조
 
         UserInfoDTO pDTO = null; // 웹(외원정보 입력화면)에서 받는 정보를 저장할 변수
 
@@ -51,8 +79,8 @@ public class UserInfoController {
 
              getParameter 함수 : HTTP요청에 웹페이지 폼을 통해 전송된 데이터 값을 가져오는 함수.
              */
-            String user_id = CmmUtil.nvl(request.getParameter("user_id")); //아이디
-            String user_name = CmmUtil.nvl(request.getParameter("user_name")); //이름
+            String userId = CmmUtil.nvl(request.getParameter("userId")); //아이디
+            String userName = CmmUtil.nvl(request.getParameter("userName")); //이름
             String password = CmmUtil.nvl(request.getParameter("password")); //비번
             String email = CmmUtil.nvl(request.getParameter("email")); //이메일
             String tel = CmmUtil.nvl(request.getParameter("tel")); //전화번호
@@ -61,14 +89,13 @@ public class UserInfoController {
 
 
             /* 값을 받았으면 반드시 로그를 찍어서 값이 제대로 들어오는지 파악해야함 */
-            log.info("user_id : " + user_id);
-            log.info("user_name : " + user_name);
+            log.info("userId : " + userId);
+            log.info("userName : " + userName);
             log.info("password : " + password);
             log.info("email : " + email);
             log.info("tel : " + tel);
             log.info("addr1 : " + addr1);
             log.info("addr2 : " + addr2);
-
 
             /* 웹(회원정보 입력화면)에서 받는 정보를 DTO에 저장하기 시작
                무조건 웹으로 받는 정보는 DTO에 저장해야한다고 이해할 것 */
@@ -76,8 +103,8 @@ public class UserInfoController {
             //웹(회원정보 입력화면)에서 받는 정보를 저장할 변수를 메모리에 올리기
             pDTO = new UserInfoDTO();
 
-            pDTO.setUser_id(user_id);
-            pDTO.setUser_name(user_name);
+            pDTO.setUserId(userId);
+            pDTO.setUserName(userName);
 
             // 비밀번호는 절대로 복호화되지 않도록 해시 알고리즘으로 암호화함
             pDTO.setPassword(EncryptUtil.encHashSHA256(password));
@@ -95,7 +122,7 @@ public class UserInfoController {
 
             if (res == 1) {
                 msg = "회원가입되었습니다.";
-                url = "/siso/index";
+
                 // 추후 회원가입 입력화면에서 ajax를 활용해서 아이디 중복, 이메일 중복 체크 할 것.
             } else if (res == 2) {
                 msg = "이미 가입된 아이디입니다.";
@@ -108,24 +135,38 @@ public class UserInfoController {
             log.info(e.toString());
             e.printStackTrace();
         } finally {
-            modelMap.addAttribute("msg", msg);
-            modelMap.addAttribute("url", url);
+            dto = new MsgDTO();
+            dto.setResult(res);
+            dto.setMsg(msg);
 
             log.info(this.getClass().getName() + ".insertUserInfo End!");
         }
 
-        return "/redirect";
+        return dto;
+    }
+
+
+    // 로그인을 위한 입력 화면으로 이동
+    @GetMapping(value = "login")
+    public String login() {
+        log.info(this.getClass().getName() + ".user/login Start!");
+        log.info(this.getClass().getName() + ".user/login End!");
+        return "user/login";
     }
 
 
     // 로그인 처리 및 결과 알려주는 화면으로 이동
-    @PostMapping(value = "/user/loginProc")
-    public String loginProc(HttpServletRequest request, ModelMap model, HttpSession session) {
-        // (값을 읽어옴, 값을 반환, 세션(웹서버의 기억공간)을 사용하기 위한 객체)
+    @ResponseBody
+    @PostMapping(value = "loginProc")
+    public MsgDTO loginProc(HttpServletRequest request, HttpSession session) throws Exception{
+        // (값을 읽어옴, 세션(웹서버의 기억공간)을 사용하기 위한 객체)
+
         log.info(this.getClass().getName() + ".loginProc Start!");
 
+        int res = 0;
         String msg = ""; // 로그인 결과에 대한 메시지를 전달할 변수
-        String url = ""; // 웹에서 받는 정보를 저장할 변수
+        MsgDTO dto = null;
+
         UserInfoDTO pDTO = null;
 
         try {
@@ -141,18 +182,18 @@ public class UserInfoController {
                로그인 결과를 받아와서 rDTO에 저장함 */
             // 웹에서 받는 정보를 저장할 변수를 메모리에 올림
             pDTO = new UserInfoDTO();
-            pDTO.setUser_id(user_id);
+            pDTO.setUserId(user_id);
 
             // 비밀번호는 복호화되지 않도록 해시 알고리즘으로 암호화함
             pDTO.setPassword(EncryptUtil.encHashSHA256(password));
 
             // 로그인을 위해 아이디와 비밀버호가 일치하는지 확인하기위한 userInfoService 호출하기
-            UserInfoDTO rDTO = userInfoService.getLogin(pDTO);
+            res = userInfoService.getUserLoginCheck(pDTO);
 
             // 로그인 성공시 회원아이디 정보를 session에 저장함.
             // 세션은 톰캣(was)의 메모리에 존재하며, 웹사이트에 접속한 사람(연결된 객체)마다 메모리에 값을 올린다.
 
-            if (CmmUtil.nvl(rDTO.getUser_id()).length() > 0) { // 로그인 성공시
+            if (res == 1) { // 로그인 성공시
 
                 session.setAttribute("SS_USER_ID", user_id);
                 session.setAttribute("SS_USER_NAME", CmmUtil.nvl(rDTO.getUser_name()));
@@ -175,40 +216,6 @@ public class UserInfoController {
             log.info(this.getClass().getName() + ".loginProc End!");
         }
         return "/redirect";
-    }
-
-    // 로그인을 위한 입력 화면으로 이동
-    @GetMapping(value = "/siso/index")
-    public String login() {
-        log.info(this.getClass().getName() + ".siso/index Start!");
-        log.info(this.getClass().getName() + ".siso/index End!");
-        return "/siso/index";
-    }
-
-
-
-
-    // 회원가입 전 아이디 중복체크하기 (Ajax를 통해 입력한 아이디 정보 받음)
-    @ResponseBody
-    @PostMapping(value = "/user/getUserIdExists")
-    public UserInfoDTO getUserExists(HttpServletRequest request) throws Exception {
-
-        log.info(this.getClass().getName() + ".getUserIdExists Start!");
-
-        String user_id = CmmUtil.nvl(request.getParameter("user_id")); // 회원아이디
-
-        log.info("user_id : " + user_id);
-
-        UserInfoDTO pDTO = new UserInfoDTO();
-        pDTO.setUser_id(user_id);
-
-        // 회원아이디를 통해 중복된 아이디인지 조회
-        UserInfoDTO rDTO = Optional.ofNullable(userInfoService.getUserIdExists(pDTO))
-                .orElseGet(UserInfoDTO::new);
-
-        log.info(this.getClass().getName() + ".getUserIdExists End!");
-
-        return rDTO;
     }
 
 

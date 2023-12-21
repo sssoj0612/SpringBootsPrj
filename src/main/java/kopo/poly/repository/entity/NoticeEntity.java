@@ -13,6 +13,7 @@ import javax.persistence.*;
 @DynamicUpdate
 @DynamicInsert
 @Builder
+@Cacheable
 @Entity
 public class NoticeEntity {
 

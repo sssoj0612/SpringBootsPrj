@@ -58,7 +58,7 @@ public class NoticeController {
 
     // 2. 게시판 작성 페이지로 접근하기 위해 만든 함수
     // GetMapping("value=notice/noticeReg") => GET방식을 통해 접속되는 URL이 notice/noticeReg 경우 아래 함수
-    @GetMapping(value = "/noticeReg")
+    @GetMapping(value = "noticeReg")
     public String NoticeReg() {
         log.info(this.getClass().getName() + ".noticeReg 페이지 보여주는 함수 실행");
         log.info(this.getClass().getName() + ".noticeReg 페이지 보여주는 함수 끝");
@@ -73,7 +73,7 @@ public class NoticeController {
     // JSON 구조로 결과 메시지를 전송하기 위해 @ResponseBody 어노테이션 추가함.
 
     @ResponseBody
-    @PostMapping(value = "/noticeInsert")
+    @PostMapping(value = "noticeInsert")
     // url로부터 들어온 값을 꺼냄, 값을 결과로 보여주는 객체,
     public MsgDTO noticeInsert(HttpServletRequest request, HttpSession session) {
         log.info(this.getClass().getName() + "게시판 글 등록하는.noticeInsert 함수 실행");
@@ -123,7 +123,7 @@ public class NoticeController {
 
 
     // 4. 게시판 상세보기
-    @GetMapping(value = "/noticeInfo")
+    @GetMapping(value = "noticeInfo")
     public String noticeInfo(HttpServletRequest request, ModelMap model) throws Exception {
 
         log.info(this.getClass().getName() + "상세보기 함수 .noticeInfo 실행");

@@ -3,7 +3,6 @@ package kopo.poly.Service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kopo.poly.DTO.NoticeDTO;
-import kopo.poly.Persistance.Mapper.INoticeMapper;
 import kopo.poly.Service.INoticeService;
 import kopo.poly.Util.CmmUtil;
 import kopo.poly.Util.DateUtil;
@@ -25,7 +24,7 @@ public class NoticeService implements INoticeService {
     private final NoticeRepository noticeRepository;
 
     @Override
-    public List<NoticeDTO> getNoticeList() throws Exception {
+    public List<NoticeDTO> getNoticeList() {
         log.info(this.getClass().getName() + ".getNoticeList start!");
 
         /* 공지사항 전체 리스트 조회하기 */
@@ -42,7 +41,7 @@ public class NoticeService implements INoticeService {
 
     @Transactional /* 조회수 증가와 같이 테이블 값을 변경하는 쿼리 실행은 반드시 트랜잭션 설정 */
     @Override
-    public NoticeDTO getNoticeInfo(NoticeDTO pDTO, boolean type) throws Exception {
+    public NoticeDTO getNoticeInfo(NoticeDTO pDTO, boolean type) {
 
         log.info(this.getClass().getName() + ".getNoticeInfo Start!");
 
@@ -64,7 +63,7 @@ public class NoticeService implements INoticeService {
     }
 
     @Override
-    public void insertNoticeInfo(NoticeDTO pDTO) throws Exception {
+    public void insertNoticeInfo(NoticeDTO pDTO) {
         log.info(this.getClass().getName() + ".InsertNoticeInfo start!");
 
         String title = CmmUtil.nvl(pDTO.getTitle());
@@ -90,7 +89,7 @@ public class NoticeService implements INoticeService {
 
     @Transactional
     @Override
-    public void updateNoticeInfo(NoticeDTO pDTO) throws Exception {
+    public void updateNoticeInfo(NoticeDTO pDTO) {
         log.info(this.getClass().getName() + ".UpdateNoticeInfo start!");
 
         Long noticeSeq = pDTO.getNoticeSeq();
@@ -122,7 +121,7 @@ public class NoticeService implements INoticeService {
     /* 데이터 삭제는 NoticeRepository에 함수를 만들지 않고 NoticeRepository가 상속한 JpaRepository에 삭제 함수 사용 */
     /* 삭제는 PK 컬럼을 기준으로 삭제함 */
     @Override
-    public void deleteNoticeInfo(NoticeDTO pDTO) throws Exception {
+    public void deleteNoticeInfo(NoticeDTO pDTO) {
         log.info(this.getClass().getName() + ".deleteNoticeInfo start!");
 
         Long noticeSeq = pDTO.getNoticeSeq();
